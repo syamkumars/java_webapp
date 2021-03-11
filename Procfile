@@ -1,1 +1,1 @@
-web: java -jar target/puppet-webapp-1.0.jar
+web: java -jar target/java-webapp-1.0.jar
