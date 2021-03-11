@@ -3,13 +3,13 @@ package com.puppet.sample;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
+import static spark.Spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static spark.Spark.get;
-import static spark.Spark.before;
+// import static spark.Spark.get;
+// import static spark.Spark.before;
 
 public class App
 {
@@ -30,7 +30,9 @@ public class App
   public static void main(String[] args) {
 
     try {
-      Spark.port(Integer.parseInt(System.getProperty("appPort")));
+      //Spark.port(Integer.parseInt(System.getProperty("appPort")));
+       Spark.port(getHerokuAssignedPort());
+      
     } catch (Exception e) {
       Spark.port(9999);
     }
@@ -44,5 +46,14 @@ public class App
     get("/", (request,response) -> "Hello World!");
 
   }
+  
+  //TO RUN IN HEROKU
+  static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
 
 }
